@@ -3,6 +3,10 @@
 import bpy
 from random import randint
 
+#####################################################
+## Animation functions
+####################################################
+
 def animateActiveObject():
 
     # add a driver to modify properties with f-curves (from sound)
@@ -20,6 +24,9 @@ def animateActiveObject():
     targ.id = bpy.data.objects["Speaker"]
     targ.transform_type = 'LOC_X'
 
+#####################################################
+## Speaker functions
+####################################################
 
 def createSpeaker():
     # add speaker
@@ -46,6 +53,11 @@ def bakeSoundToSpeaker(name):
 
     # bake f-curves to speaker
     bpy.ops.graph.sound_bake(filepath = '/Users/DavidSchommer/Music/Dewolfe.co.uk/Dubstep/GarethYoung/Unbreakable_DWCD_0540_trk_100.WAV', low = (lowest_freq), high = (highest_freq), attack = 0.005, release = 0.200, threshold = 0, sthreshold = 0.100)
+
+
+#####################################################
+## Group functions
+####################################################
 
 def animateGroup(groupName):
 
@@ -84,12 +96,12 @@ def animateGroup(groupName):
     scn.objects.active = obActive
     obActive.select = obActiveIsSelected
 
-    bpy.context.area.type = 'TEXT_EDITOR'
+    bpy.context.area.type = 'VIEW_3D'
 
 
-##############
+#####################################################
 ## UI
-#############
+####################################################
 
 class AudioVisualizerPanel(bpy.types.Panel):
     """Creates a Panel in the Object properties window"""
@@ -105,14 +117,14 @@ class AudioVisualizerPanel(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()
-        row.label(text="Hello!", icon='WORLD_DATA')
+        row.label(text="Audio Visualizer", icon='SPEAKER')
 
         row = layout.row()
-        row.operator("audiovisualizer.execute", text = "All")
+        row.operator("audiovisualizer.execute", text = "Run")
 
 
 class SimpleOperator(bpy.types.Operator):
-    """Tooltip"""
+    """Generate animations from sound file"""
     bl_idname = "audiovisualizer.execute"
     bl_label = "Audio Visualize"
 
@@ -128,9 +140,9 @@ class SimpleOperator(bpy.types.Operator):
         animateGroup('Group')
         return {'FINISHED'}
 
-
-# Registration
-#
+#####################################################
+## Registration
+####################################################
 
 def register():
     bpy.utils.register_class(AudioVisualizerPanel)
