@@ -7,9 +7,20 @@ from random import randint
 #####################################################
 ## Driver functions
 ####################################################
-def createXTranslateDriver():
+
+def createDriver(axis, transformType, speakerObject):
+
+    transform_mapping = {}
+
+    if transformType == "location":
+        transform_mapping = {0: 'LOC_X', 1: 'LOC_Y', 2: 'LOC_Z'}
+    elif transformType == "rotation_euler": 
+        transform_mapping = {0: 'ROT_X', 1: 'ROT_Y', 2: 'ROT_Z'}
+    elif transformType == "scale":
+        transform_mapping = {0: 'SCALE_X', 1: 'SCALE_Y', 2: 'SCALE_Z'}
+
     # add a driver to modify properties with f-curves (from sound)
-    fcurve = bpy.context.object.driver_add("location", 2) # z-axis location
+    fcurve = bpy.context.object.driver_add(transformType, axis)
     drv = fcurve.driver
     drv.type = 'SCRIPTED'
     drv.expression += ' + x * 10'
@@ -20,8 +31,45 @@ def createXTranslateDriver():
     var.type = 'TRANSFORMS'
 
     targ = var.targets[0]
-    targ.id = bpy.data.objects["Speaker"]
-    targ.transform_type = 'LOC_X'
+    targ.id = bpy.data.objects[speakerObject]
+    targ.transform_type = transform_mapping[axis]
+
+# assumptions: 0: x-axis, 1: y-axis, 2: z-axis
+# def createTranslateDriver(axis, speakerObject):
+
+#     transform_mapping = {0: 'LOC_X', 1: 'LOC_Y', 2: 'LOC_Z'}
+
+#     # add a driver to modify properties with f-curves (from sound)
+#     fcurve = bpy.context.object.driver_add("location", axis)
+#     drv = fcurve.driver
+#     drv.type = 'SCRIPTED'
+#     drv.expression += ' + x * 10'
+#     drv.show_debug_info = True
+
+#     var = drv.variables.new()
+#     var.name = 'x'
+#     var.type = 'TRANSFORMS'
+
+#     targ = var.targets[0]
+#     targ.id = bpy.data.objects[speakerObject]
+#     targ.transform_type = transform_mapping[axis]
+
+# def createXTranslateDriver():
+#     # add a driver to modify properties with f-curves (from sound)
+#     fcurve = bpy.context.object.driver_add("location", 0) # x-axis location
+#     drv = fcurve.driver
+#     drv.type = 'SCRIPTED'
+#     drv.expression += ' + x * 10'
+#     drv.show_debug_info = True
+
+#     var = drv.variables.new()
+#     var.name = 'x'
+#     var.type = 'TRANSFORMS'
+
+#     targ = var.targets[0]
+#     targ.id = bpy.data.objects["Speaker"]
+#     targ.transform_type = 'LOC_X'
+
 
 
 #####################################################
@@ -29,7 +77,32 @@ def createXTranslateDriver():
 ####################################################
 
 def animateActiveObject():
-    createXTranslateDriver()
+    # translate
+    if bpy.context.scene.TranslateX == True:
+        createDriver(0, 'location', 'Speaker')
+    if bpy.context.scene.TranslateY == True:
+        createDriver(1, 'location', 'Speaker')
+    if bpy.context.scene.TranslateZ == True:
+        createDriver(2, 'location', 'Speaker')
+
+    # scale
+    if bpy.context.scene.ScaleX == True: 
+        createDriver(0, 'scale', 'Speaker')
+    if bpy.context.scene.ScaleY == True: 
+        createDriver(1, 'scale', 'Speaker')
+    if bpy.context.scene.ScaleZ == True: 
+        createDriver(2, 'scale', 'Speaker')
+
+    # rotate
+    if bpy.context.scene.RotateX == True: 
+        createDriver(0, 'rotation_euler', 'Speaker')
+    if bpy.context.scene.RotateY == True: 
+        createDriver(1, 'rotation_euler', 'Speaker')
+    if bpy.context.scene.RotateZ == True: 
+        createDriver(2, 'rotation_euler', 'Speaker')
+
+
+    
     
 
 #####################################################
