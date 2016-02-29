@@ -3,12 +3,11 @@
 import bpy
 from random import randint
 
+
 #####################################################
-## Animation functions
+## Driver functions
 ####################################################
-
-def animateActiveObject():
-
+def createXTranslateDriver():
     # add a driver to modify properties with f-curves (from sound)
     fcurve = bpy.context.object.driver_add("location", 2) # z-axis location
     drv = fcurve.driver
@@ -23,6 +22,15 @@ def animateActiveObject():
     targ = var.targets[0]
     targ.id = bpy.data.objects["Speaker"]
     targ.transform_type = 'LOC_X'
+
+
+#####################################################
+## Animation functions
+####################################################
+
+def animateActiveObject():
+    createXTranslateDriver()
+    
 
 #####################################################
 ## Speaker functions
