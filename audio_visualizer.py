@@ -54,7 +54,9 @@ def bakeSoundToSpeaker(name):
     # bake f-curves to speaker
     #bpy.ops.graph.sound_bake(filepath = '/Users/DavidSchommer/Music/Dewolfe.co.uk/Dubstep/GarethYoung/Unbreakable_DWCD_0540_trk_100.WAV', low = (lowest_freq), high = (highest_freq), attack = 0.005, release = 0.200, threshold = 0, sthreshold = 0.100)
     audioPath = bpy.context.scene.audio_path
-    bpy.ops.graph.sound_bake(filepath = audioPath, low = (lowest_freq), high = (highest_freq), attack = 0.005, release = 0.200, threshold = 0, sthreshold = 0.100)
+    # convert to absolute path
+    audioPathAbsolute = bpy.path.abspath(audioPath)
+    bpy.ops.graph.sound_bake(filepath = audioPathAbsolute, low = (lowest_freq), high = (highest_freq), attack = 0.005, release = 0.200, threshold = 0, sthreshold = 0.100)
 
 
 #####################################################
