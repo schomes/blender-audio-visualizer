@@ -10,7 +10,7 @@ from random import randint
 
 def createDriver(axis, transformType, speakerObject):
 
-    transform_mapping = {}
+    variationFactor = randint(0, 9)
 
     if transformType == "location":
         transform_mapping = {0: 'LOC_X', 1: 'LOC_Y', 2: 'LOC_Z'}
@@ -23,7 +23,7 @@ def createDriver(axis, transformType, speakerObject):
     fcurve = bpy.context.object.driver_add(transformType, axis)
     drv = fcurve.driver
     drv.type = 'SCRIPTED'
-    drv.expression += ' + x * 10'
+    drv.expression += ' + x * (%d)' % variationFactor
     drv.show_debug_info = True
 
     var = drv.variables.new()
