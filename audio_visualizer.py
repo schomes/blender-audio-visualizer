@@ -1,4 +1,4 @@
-# Iterates through each object in a group named "Group" and animates each object with f-curve values from a sound file
+# Iterates through each object in a group named "Group" and animates each object with f-curve generated from a sound file
 
 import bpy
 from random import randint
@@ -6,7 +6,7 @@ from random import randint
 
 #####################################################
 ## Create driver
-####################################################
+#####################################################
 
 # axis = 0: x-axis, 1: y-axis, 2: z-axis
 def createDriver(axis, transformType, speakerObject):
@@ -38,7 +38,7 @@ def createDriver(axis, transformType, speakerObject):
 
 #####################################################
 ## Animation
-####################################################
+#####################################################
 
 def animateActiveObject():
     # translate
@@ -68,7 +68,7 @@ def animateActiveObject():
 
 #####################################################
 ## Speaker
-####################################################
+#####################################################
 
 def createSpeaker():
     # add speaker
@@ -103,7 +103,7 @@ def bakeSoundToSpeaker(name):
 
 #####################################################
 ## Group functions
-####################################################
+#####################################################
 
 def animateGroup(groupName):
 
@@ -146,8 +146,8 @@ def animateGroup(groupName):
 
 
 #####################################################
-## UI
-####################################################
+## UI / Scene Properties
+#####################################################
 
 def initSceneProperties(scn):
     
@@ -199,7 +199,6 @@ def initSceneProperties(scn):
         description = 'Allow rotation on the z-axis')
     scn['RotateZ'] = False
     
-    
     return
 
 initSceneProperties(bpy.context.scene)
@@ -241,9 +240,6 @@ class AudioVisualizerPanel(bpy.types.Panel):
         row = layout.row()
         row.operator('audiovisualizer.execute', text = 'Run')
         
-        
-
-
 class SimpleOperator(bpy.types.Operator):
     """Generate animations from sound file"""
     bl_idname = 'audiovisualizer.execute'
@@ -263,9 +259,10 @@ class SimpleOperator(bpy.types.Operator):
         animateGroup('Group')
         return {'FINISHED'}
 
+
 #####################################################
 ## Registration
-####################################################
+#####################################################
 
 def register():
     bpy.utils.register_class(AudioVisualizerPanel)
