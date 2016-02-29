@@ -133,6 +133,8 @@ class SimpleOperator(bpy.types.Operator):
         return context.active_object is not None
 
     def execute(self, context):
+        # set current frame to 0
+        bpy.context.scene.frame_current = 0
         # Create speaker object (assumption: the speaker object is named 'Speaker')
         createSpeaker()
         # pass name of newly created speaker instead
