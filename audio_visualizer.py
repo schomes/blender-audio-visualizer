@@ -107,6 +107,15 @@ def animateGroup(groupName):
 ## UI
 ####################################################
 
+def initSceneProperties(scn):
+    bpy.types.Scene.MyBool = bpy.props.BoolProperty(
+        name = "Boolean", 
+        description = "True or False?")
+    scn['MyBool'] = True
+    return
+
+initSceneProperties(bpy.context.scene)
+
 class AudioVisualizerPanel(bpy.types.Panel):
     """Creates a Panel in the Object properties window"""
     bl_label = "Audio Visualizer Panel"
@@ -125,6 +134,15 @@ class AudioVisualizerPanel(bpy.types.Panel):
         
         col = layout.column()
         col.prop(context.scene, 'audio_path')
+
+        #animationOptions = bpy.props.EnumProperty(name = "animation_options", items=[('translate_x', 'translate by x', 'translate by x'), ('translate_y', 'translate by y', 'translate by y')])
+        #row = layout.row()
+        #row.prop(self, 'animation_options', expand=True)
+        row = layout.row(align=True)
+        row.prop(context.object, "hide_render",text="Render")
+        row.prop(context.object, "hide",text="View")
+        
+        layout.prop(context.scene, 'MyBool')
 
         row = layout.row()
         row.operator("audiovisualizer.execute", text = "Run")
@@ -166,7 +184,7 @@ def register():
       description = "Define the path of an audio file",
       subtype = 'FILE_PATH'
       )
-
+      
 def unregister():
     bpy.utils.unregister_class(AudioVisualizerPanel)
     bpy.utils.unregister_class(SimpleOperator)
