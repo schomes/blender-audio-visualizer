@@ -52,7 +52,9 @@ def bakeSoundToSpeaker(name):
     highest_freq = 100000
 
     # bake f-curves to speaker
-    bpy.ops.graph.sound_bake(filepath = '/Users/DavidSchommer/Music/Dewolfe.co.uk/Dubstep/GarethYoung/Unbreakable_DWCD_0540_trk_100.WAV', low = (lowest_freq), high = (highest_freq), attack = 0.005, release = 0.200, threshold = 0, sthreshold = 0.100)
+    #bpy.ops.graph.sound_bake(filepath = '/Users/DavidSchommer/Music/Dewolfe.co.uk/Dubstep/GarethYoung/Unbreakable_DWCD_0540_trk_100.WAV', low = (lowest_freq), high = (highest_freq), attack = 0.005, release = 0.200, threshold = 0, sthreshold = 0.100)
+    audioPath = bpy.context.scene.audio_path
+    bpy.ops.graph.sound_bake(filepath = audioPath, low = (lowest_freq), high = (highest_freq), attack = 0.005, release = 0.200, threshold = 0, sthreshold = 0.100)
 
 
 #####################################################
@@ -118,9 +120,14 @@ class AudioVisualizerPanel(bpy.types.Panel):
 
         row = layout.row()
         row.label(text="Audio Visualizer", icon='SPEAKER')
+        
+        col = layout.column()
+        col.prop(context.scene, 'audio_path')
 
         row = layout.row()
         row.operator("audiovisualizer.execute", text = "Run")
+        
+        
 
 
 class SimpleOperator(bpy.types.Operator):
@@ -149,10 +156,19 @@ class SimpleOperator(bpy.types.Operator):
 def register():
     bpy.utils.register_class(AudioVisualizerPanel)
     bpy.utils.register_class(SimpleOperator)
+    # allows selecting path for audio file
+    bpy.types.Scene.audio_path = bpy.props.StringProperty \
+      (
+      name = "Audio File",
+      default = "",
+      description = "Define the path of an audio file",
+      subtype = 'FILE_PATH'
+      )
 
 def unregister():
     bpy.utils.unregister_class(AudioVisualizerPanel)
     bpy.utils.unregister_class(SimpleOperator)
+    del bpy.types.Scene.audio_path
 
 if __name__ == "__main__":
     register()
