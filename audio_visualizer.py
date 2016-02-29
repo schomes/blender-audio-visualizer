@@ -108,10 +108,56 @@ def animateGroup(groupName):
 ####################################################
 
 def initSceneProperties(scn):
-    bpy.types.Scene.MyBool = bpy.props.BoolProperty(
-        name = "Boolean", 
-        description = "True or False?")
-    scn['MyBool'] = True
+    
+    # translate
+    bpy.types.Scene.TranslateX = bpy.props.BoolProperty(
+        name = "Translate X", 
+        description = "Allow translation on the x-axis")
+    scn['TranslateX'] = False
+    
+    bpy.types.Scene.TranslateY = bpy.props.BoolProperty(
+        name = "Translate Y", 
+        description = "Allow translation on the y-axis")
+    scn['TranslateY'] = False
+    
+    bpy.types.Scene.TranslateZ = bpy.props.BoolProperty(
+        name = "Translate Z", 
+        description = "Allow translation on the z-axis")
+    scn['TranslateZ'] = False
+    
+    # scale
+    bpy.types.Scene.ScaleX = bpy.props.BoolProperty(
+        name = "Scale X", 
+        description = "Allow scale on the x-axis")
+    scn['ScaleX'] = False
+    
+    bpy.types.Scene.ScaleY = bpy.props.BoolProperty(
+        name = "Scale Y", 
+        description = "Allow scale on the y-axis")
+    scn['ScaleY'] = False
+    
+    bpy.types.Scene.ScaleZ = bpy.props.BoolProperty(
+        name = "Scale Z", 
+        description = "Allow scale on the z-axis")
+    scn['ScaleZ'] = False
+    
+    # rotation
+    bpy.types.Scene.RotateX = bpy.props.BoolProperty(
+        name = "Rotate X", 
+        description = "Allow rotation on the x-axis")
+    scn['RotateX'] = False
+    
+    bpy.types.Scene.RotateY = bpy.props.BoolProperty(
+        name = "Rotate Y", 
+        description = "Allow rotation on the y-axis")
+    scn['RotateY'] = False
+    
+    bpy.types.Scene.RotateZ = bpy.props.BoolProperty(
+        name = "Rotate Z", 
+        description = "Allow rotation on the z-axis")
+    scn['RotateZ'] = False
+    
+    
     return
 
 initSceneProperties(bpy.context.scene)
@@ -134,15 +180,21 @@ class AudioVisualizerPanel(bpy.types.Panel):
         
         col = layout.column()
         col.prop(context.scene, 'audio_path')
-
-        #animationOptions = bpy.props.EnumProperty(name = "animation_options", items=[('translate_x', 'translate by x', 'translate by x'), ('translate_y', 'translate by y', 'translate by y')])
-        #row = layout.row()
-        #row.prop(self, 'animation_options', expand=True)
-        row = layout.row(align=True)
-        row.prop(context.object, "hide_render",text="Render")
-        row.prop(context.object, "hide",text="View")
         
-        layout.prop(context.scene, 'MyBool')
+        col = layout.column()
+        
+        col.prop(context.scene, 'TranslateX')
+        col.prop(context.scene, 'TranslateY')
+        col.prop(context.scene, 'TranslateZ')
+        
+        col.prop(context.scene, 'ScaleX')
+        col.prop(context.scene, 'ScaleY')
+        col.prop(context.scene, 'ScaleZ')
+        
+        col.prop(context.scene, 'RotateX')
+        col.prop(context.scene, 'RotateY')
+        col.prop(context.scene, 'RotateZ')
+        
 
         row = layout.row()
         row.operator("audiovisualizer.execute", text = "Run")
