@@ -5,18 +5,19 @@ from random import randint
 
 
 #####################################################
-## Driver functions
+## Create driver
 ####################################################
 
+# axis = 0: x-axis, 1: y-axis, 2: z-axis
 def createDriver(axis, transformType, speakerObject):
 
-    variationFactor = randint(0, 9)
+    variationFactor = randint(1, 9)
 
-    if transformType == "location":
+    if transformType == 'location':
         transform_mapping = {0: 'LOC_X', 1: 'LOC_Y', 2: 'LOC_Z'}
-    elif transformType == "rotation_euler": 
+    elif transformType == 'rotation_euler': 
         transform_mapping = {0: 'ROT_X', 1: 'ROT_Y', 2: 'ROT_Z'}
-    elif transformType == "scale":
+    elif transformType == 'scale':
         transform_mapping = {0: 'SCALE_X', 1: 'SCALE_Y', 2: 'SCALE_Z'}
 
     # add a driver to modify properties with f-curves (from sound)
@@ -34,46 +35,9 @@ def createDriver(axis, transformType, speakerObject):
     targ.id = bpy.data.objects[speakerObject]
     targ.transform_type = transform_mapping[axis]
 
-# assumptions: 0: x-axis, 1: y-axis, 2: z-axis
-# def createTranslateDriver(axis, speakerObject):
-
-#     transform_mapping = {0: 'LOC_X', 1: 'LOC_Y', 2: 'LOC_Z'}
-
-#     # add a driver to modify properties with f-curves (from sound)
-#     fcurve = bpy.context.object.driver_add("location", axis)
-#     drv = fcurve.driver
-#     drv.type = 'SCRIPTED'
-#     drv.expression += ' + x * 10'
-#     drv.show_debug_info = True
-
-#     var = drv.variables.new()
-#     var.name = 'x'
-#     var.type = 'TRANSFORMS'
-
-#     targ = var.targets[0]
-#     targ.id = bpy.data.objects[speakerObject]
-#     targ.transform_type = transform_mapping[axis]
-
-# def createXTranslateDriver():
-#     # add a driver to modify properties with f-curves (from sound)
-#     fcurve = bpy.context.object.driver_add("location", 0) # x-axis location
-#     drv = fcurve.driver
-#     drv.type = 'SCRIPTED'
-#     drv.expression += ' + x * 10'
-#     drv.show_debug_info = True
-
-#     var = drv.variables.new()
-#     var.name = 'x'
-#     var.type = 'TRANSFORMS'
-
-#     targ = var.targets[0]
-#     targ.id = bpy.data.objects["Speaker"]
-#     targ.transform_type = 'LOC_X'
-
-
 
 #####################################################
-## Animation functions
+## Animation
 ####################################################
 
 def animateActiveObject():
@@ -102,11 +66,8 @@ def animateActiveObject():
         createDriver(2, 'rotation_euler', 'Speaker')
 
 
-    
-    
-
 #####################################################
-## Speaker functions
+## Speaker
 ####################################################
 
 def createSpeaker():
@@ -156,7 +117,7 @@ def animateGroup(groupName):
     obActiveIsSelected = obActive.select
 
     obj = bpy.context.object
-    groupName = "Group"
+    groupName = 'Group'
 
     # deselect all selected objects
     bpy.ops.object.select_all(action='DESELECT')
@@ -192,50 +153,50 @@ def initSceneProperties(scn):
     
     # translate
     bpy.types.Scene.TranslateX = bpy.props.BoolProperty(
-        name = "Translate X", 
-        description = "Allow translation on the x-axis")
+        name = 'Translate X', 
+        description = 'Allow translation on the x-axis')
     scn['TranslateX'] = False
     
     bpy.types.Scene.TranslateY = bpy.props.BoolProperty(
-        name = "Translate Y", 
-        description = "Allow translation on the y-axis")
+        name = 'Translate Y', 
+        description = 'Allow translation on the y-axis')
     scn['TranslateY'] = False
     
     bpy.types.Scene.TranslateZ = bpy.props.BoolProperty(
-        name = "Translate Z", 
-        description = "Allow translation on the z-axis")
+        name = 'Translate Z', 
+        description = 'Allow translation on the z-axis')
     scn['TranslateZ'] = False
     
     # scale
     bpy.types.Scene.ScaleX = bpy.props.BoolProperty(
-        name = "Scale X", 
-        description = "Allow scale on the x-axis")
+        name = 'Scale X', 
+        description = 'Allow scale on the x-axis')
     scn['ScaleX'] = False
     
     bpy.types.Scene.ScaleY = bpy.props.BoolProperty(
-        name = "Scale Y", 
-        description = "Allow scale on the y-axis")
+        name = 'Scale Y', 
+        description = 'Allow scale on the y-axis')
     scn['ScaleY'] = False
     
     bpy.types.Scene.ScaleZ = bpy.props.BoolProperty(
-        name = "Scale Z", 
-        description = "Allow scale on the z-axis")
+        name = 'Scale Z', 
+        description = 'Allow scale on the z-axis')
     scn['ScaleZ'] = False
     
     # rotation
     bpy.types.Scene.RotateX = bpy.props.BoolProperty(
-        name = "Rotate X", 
-        description = "Allow rotation on the x-axis")
+        name = 'Rotate X', 
+        description = 'Allow rotation on the x-axis')
     scn['RotateX'] = False
     
     bpy.types.Scene.RotateY = bpy.props.BoolProperty(
-        name = "Rotate Y", 
-        description = "Allow rotation on the y-axis")
+        name = 'Rotate Y', 
+        description = 'Allow rotation on the y-axis')
     scn['RotateY'] = False
     
     bpy.types.Scene.RotateZ = bpy.props.BoolProperty(
-        name = "Rotate Z", 
-        description = "Allow rotation on the z-axis")
+        name = 'Rotate Z', 
+        description = 'Allow rotation on the z-axis')
     scn['RotateZ'] = False
     
     
@@ -245,11 +206,11 @@ initSceneProperties(bpy.context.scene)
 
 class AudioVisualizerPanel(bpy.types.Panel):
     """Creates a Panel in the Object properties window"""
-    bl_label = "Audio Visualizer Panel"
-    bl_idname = "OBJECT_PT_avpanel"
+    bl_label = 'Audio Visualizer Panel'
+    bl_idname = 'OBJECT_PT_avpanel'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'TOOLS'
-    bl_category = "Audio Visualizer"
+    bl_category = 'Audio Visualizer'
 
     def draw(self, context):
         layout = self.layout
@@ -257,7 +218,7 @@ class AudioVisualizerPanel(bpy.types.Panel):
         obj = context.object
 
         row = layout.row()
-        row.label(text="Audio Visualizer", icon='SPEAKER')
+        row.label(text='Audio Visualizer', icon='SPEAKER')
         
         col = layout.column()
         col.prop(context.scene, 'audio_path')
@@ -278,15 +239,15 @@ class AudioVisualizerPanel(bpy.types.Panel):
         
 
         row = layout.row()
-        row.operator("audiovisualizer.execute", text = "Run")
+        row.operator('audiovisualizer.execute', text = 'Run')
         
         
 
 
 class SimpleOperator(bpy.types.Operator):
     """Generate animations from sound file"""
-    bl_idname = "audiovisualizer.execute"
-    bl_label = "Audio Visualize"
+    bl_idname = 'audiovisualizer.execute'
+    bl_label = 'Audio Visualize'
 
     @classmethod
     def poll(cls, context):
@@ -312,9 +273,9 @@ def register():
     # allows selecting path for audio file
     bpy.types.Scene.audio_path = bpy.props.StringProperty \
       (
-      name = "Audio File",
-      default = "",
-      description = "Define the path of an audio file",
+      name = 'Audio File',
+      default = '',
+      description = 'Define the path of an audio file',
       subtype = 'FILE_PATH'
       )
       
@@ -323,5 +284,5 @@ def unregister():
     bpy.utils.unregister_class(SimpleOperator)
     del bpy.types.Scene.audio_path
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     register()
